@@ -1,5 +1,9 @@
 # MAESTRO Threat Modeling Skill
 
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/kiosvantra/maestro-threat-modeling-skill?display_name=tag)](https://github.com/kiosvantra/maestro-threat-modeling-skill/releases)
+[![GitHub stars](https://img.shields.io/github/stars/kiosvantra/maestro-threat-modeling-skill?style=social)](https://github.com/kiosvantra/maestro-threat-modeling-skill/stargazers)
+
 <p align="center">
   <img src="assets/maestro-threat-modeling-skill.svg" alt="MAESTRO Threat Modeling Skill banner" width="100%" />
 </p>
@@ -70,12 +74,63 @@ This skill treats MAESTRO as a strong comparative lens while preserving boundary
 
 Copy `SKILL.md` into your agent skill directory, or adapt it into your prompt system.
 
+### Quick start
+
+```bash
+git clone https://github.com/kiosvantra/maestro-threat-modeling-skill.git
+cd maestro-threat-modeling-skill
+```
+
 Typical use cases:
 
 - analyze a repository before shipping a multi-agent feature
 - review an agent environment with tools, memory, and external APIs
 - assess a GitHub target with trust-boundary reasoning
 - produce actionable findings and convert them into issues
+
+## Examples
+
+### OpenCode
+
+Copy the skill into your local skills directory:
+
+```bash
+mkdir -p ~/.config/opencode/skills/threat-modeling
+cp SKILL.md ~/.config/opencode/skills/threat-modeling/SKILL.md
+cp -R assets ~/.config/opencode/skills/threat-modeling/
+```
+
+Then invoke it from your agent workflow when you need a structured risk assessment.
+
+### Claude Code
+
+Use the skill as a reusable prompt asset:
+
+```text
+Use the attached MAESTRO Threat Modeling Skill.
+Analyze this repository with a boundary-first approach.
+Add the MAESTRO seven-layer mapping only when it improves clarity.
+Separate facts from assumptions and end with actionable mitigations.
+```
+
+### Cursor
+
+Drop `SKILL.md` into your project docs or prompts folder and reference it in a chat:
+
+```text
+Apply the MAESTRO Threat Modeling Skill in this repository.
+Map roles, trust boundaries, flows, attack paths, and high-risk transitions.
+If useful, include a boundary-to-layer crosswalk and issue candidates.
+```
+
+### Generic prompt wrapper
+
+```text
+You are performing a threat-modeling pass using the attached skill.
+Default to boundary-first analysis.
+Use MAESTRO layers only as an optional comparative overlay.
+Output an executive summary, key findings, mitigations, and open questions.
+```
 
 ## Output style
 
@@ -118,6 +173,10 @@ If you have retrieval or memory infrastructure, plug it in as an optional enhanc
 ## License
 
 Apache-2.0
+
+## Release
+
+The first public release is `v1.0.0`.
 
 ## Disclaimer
 
