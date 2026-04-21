@@ -1,55 +1,54 @@
-# MAESTRO Threat Modeling Skill
+# MAESTRO Threat Modeling — Canonical
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/kiosvantra/maestro-threat-modeling-skill?display_name=tag)](https://github.com/kiosvantra/maestro-threat-modeling-skill/releases)
 [![GitHub stars](https://img.shields.io/github/stars/kiosvantra/maestro-threat-modeling-skill?style=social)](https://github.com/kiosvantra/maestro-threat-modeling-skill/stargazers)
 
 <p align="center">
-  <img src="assets/maestro-threat-modeling-skill.svg" alt="MAESTRO Threat Modeling Skill banner" width="100%" />
+  <img src="assets/maestro-threat-modeling-skill.svg" alt="MAESTRO Threat Modeling canonical banner" width="100%" />
 </p>
 
-A portable, public threat-modeling skill for agent workflows.
+The canonical public skill for threat modeling with **boundary-first analysis** and a **MAESTRO overlay**.
 
-It is inspired by the Cloud Security Alliance MAESTRO framework, but optimized for practical agent operations: trust boundaries, attack paths, evidence-aware reporting, and optional issue generation.
+## What changed in v2
 
-## What this is
+This repository now publishes the **canonical** version of the skill.
 
-- A single reusable `SKILL.md` for agent frameworks that support skill-style prompts
-- A boundary-first threat-modeling workflow with an optional MAESTRO seven-layer overlay
-- A portable package with no hard dependency on private memory, retrieval, or local scripts
+It replaces the older generic formulation with a stronger workflow that is:
+- still portable and public
+- explicitly evidence-first
+- boundary-first by default
+- MAESTRO-aligned without becoming rigid
+- better for repo-first reviews, CISO reviews, and GitHub-target assessments
 
-## What this is not
+## Core stance
 
-- Not an official CSA MAESTRO repository
-- Not a web app or scanner
-- Not a complete security audit by itself
+- **Boundary-first** is the default analysis mode.
+- **MAESTRO** is used as an overlay when it improves clarity or comparability.
+- Findings must separate **facts**, **inferences**, and **assumptions**.
+- Repo assessments must be labeled **repo-first** unless runtime evidence was inspected.
 
-## Core design
+## Best-fit use cases
 
-This skill keeps the primary analysis centered on:
+- repository threat modeling
+- CISO repo reviews
+- agentic / multi-agent systems
+- RAG pipelines
+- MCP / tool-calling systems
+- deployment and CI/CD reviews
+- GitHub-target risk reviews
 
-- roles
-- trust boundaries
-- data and control flows
-- attack paths
-- evidence vs assumptions
-- mitigations and follow-up issues
+## Output shape
 
-When useful, it adds a second lens based on the seven MAESTRO layers:
-
-1. Foundation Models
-2. Data Operations
-3. Agent Frameworks
-4. Deployment & Infrastructure
-5. Evaluation & Observability
-6. Security & Compliance
-7. Agent Ecosystem
-
-## Why this approach
-
-Pure layer-only analysis is useful for consistency, but real-world agent systems often fail at boundaries: where tools become privileged, where memory persists, where delegated actions cross trust zones, and where ambiguous input becomes automation.
-
-This skill treats MAESTRO as a strong comparative lens while preserving boundary-first reasoning as the default mode.
+The canonical skill requires this order:
+1. Scope and intent
+2. System snapshot
+3. Trust boundaries
+4. Assumptions and blind spots
+5. MAESTRO layer findings
+6. Top threats
+7. Mitigations
+8. Execution backlog
 
 ## Repository layout
 
@@ -66,118 +65,49 @@ This skill treats MAESTRO as a strong comparative lens while preserving boundary
 
 ## Included artifacts
 
-- `SKILL.md` — the portable threat-modeling skill
+- `SKILL.md` — canonical public skill
 - `assets/obsidian-note-template.md` — short note template for knowledge bases
 - `assets/technical-report-template.md` — fuller report template for technical reviews
 
-## Usage
-
-Copy `SKILL.md` into your agent skill directory, or adapt it into your prompt system.
-
-### Quick start
+## Quick start
 
 ```bash
 git clone https://github.com/kiosvantra/maestro-threat-modeling-skill.git
 cd maestro-threat-modeling-skill
 ```
 
-Typical use cases:
+Copy `SKILL.md` into your agent skill directory or adapt it into your prompt system.
 
-- analyze a repository before shipping a multi-agent feature
-- review an agent environment with tools, memory, and external APIs
-- assess a GitHub target with trust-boundary reasoning
-- produce actionable findings and convert them into issues
-
-## Examples
-
-### OpenCode
-
-Copy the skill into your local skills directory:
-
-```bash
-mkdir -p ~/.config/opencode/skills/threat-modeling
-cp SKILL.md ~/.config/opencode/skills/threat-modeling/SKILL.md
-cp -R assets ~/.config/opencode/skills/threat-modeling/
-```
-
-Then invoke it from your agent workflow when you need a structured risk assessment.
-
-### Claude Code
-
-Use the skill as a reusable prompt asset:
+## Example prompt wrapper
 
 ```text
-Use the attached MAESTRO Threat Modeling Skill.
-Analyze this repository with a boundary-first approach.
-Add the MAESTRO seven-layer mapping only when it improves clarity.
-Separate facts from assumptions and end with actionable mitigations.
-```
-
-### Cursor
-
-Drop `SKILL.md` into your project docs or prompts folder and reference it in a chat:
-
-```text
-Apply the MAESTRO Threat Modeling Skill in this repository.
-Map roles, trust boundaries, flows, attack paths, and high-risk transitions.
-If useful, include a boundary-to-layer crosswalk and issue candidates.
-```
-
-### Generic prompt wrapper
-
-```text
-You are performing a threat-modeling pass using the attached skill.
+Use the attached MAESTRO Threat Modeling canonical skill.
 Default to boundary-first analysis.
-Use MAESTRO layers only as an optional comparative overlay.
-Output an executive summary, key findings, mitigations, and open questions.
+Use MAESTRO layers only as an overlay when they improve clarity.
+Separate facts, inferences, and assumptions.
+End with top threats, mitigations, and an execution backlog.
 ```
-
-## Output style
-
-Expected outputs include:
-
-- executive summary
-- technical report
-- optional MAESTRO layer table
-- optional boundary-to-layer crosswalk
-- optional issue candidates
 
 ## Portability notes
 
 This public version intentionally avoids mandatory references to:
-
 - private file paths
 - proprietary retrieval systems
 - local-only helper scripts
 - a specific memory backend
 
-If you have retrieval or memory infrastructure, plug it in as an optional enhancement.
+## Method fit
 
-## Recommended workflow
-
-1. Define scope and success criteria
-2. Map actors, flows, storage, and side effects
-3. Identify trust boundaries
-4. Analyze threats by boundary
-5. Add MAESTRO layer mapping only if it improves clarity or comparability
-6. Score impact, likelihood, exposure, and blast radius
-7. Propose mitigations and residual risk
-8. Turn clear findings into issues
-
-## Related methodology
-
-- Cloud Security Alliance MAESTRO framework
-- OWASP-inspired threat categories for agentic systems
-- Boundary-centric threat analysis for tool-using agents
+This is not a scanner and not a full runtime audit by itself.
+It is strongest when used to produce an evidence-based threat model from:
+- code
+- configs
+- workflows
+- prompts
+- manifests
+- docs
+- issue history
 
 ## License
 
 MIT
-
-## Release
-
-The first public release is `v1.0.0`.
-
-## Disclaimer
-
-This repository provides a reusable analysis skill, not a guarantee of security. Human review is still required.

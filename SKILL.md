@@ -1,157 +1,294 @@
 ---
-name: threat-modeling
+name: maestro-threat-modeling-canonical
 description: >
-  Domain-neutral threat modeling and risk assessment workflow for environments,
-  repositories, or GitHub targets. Trigger: when asked to evaluate risk,
-  review trust boundaries, assess threats, or analyze an environment/repo with
-  a structured methodology.
+  Canonical threat-modeling workflow combining boundary-first analysis with a
+  MAESTRO overlay, optimized for repo-first assessments and reusable across
+  repositories, environments, GitHub targets, and CISO workflows.
 license: MIT
 metadata:
-  author: gentleman-programming
-  version: "1.0"
+  author: Igris
+  version: "2.0.0"
 ---
 
-## When to Use
+# MAESTRO Threat Modeling — Canonical
 
-- Evaluating a local environment, repository, or GitHub project
-- Assessing security, abuse, or operational risk before changes
-- Reviewing trust boundaries, data flows, and external dependencies
-- Producing a structured risk report for technical or research domains
+Use this as the canonical threat-modeling skill when asked to assess security, abuse, or operational risk in a **repository**, **environment**, **GitHub target**, or adjacent technical system.
 
-## Critical Patterns
+## Core stance
+- Default to a **boundary-first analysis**.
+- Use the **MAESTRO layer model as an overlay**, not as theater.
+- Treat the output as a **risk narrative grounded in evidence**, not a rigid checklist.
+- For repo work, present the result explicitly as **repo-first** unless runtime evidence was also inspected.
 
-Anchor the analysis in a MAESTRO-style decomposition, but keep it adaptive:
-- use a boundary-first analysis as the default mode
-- model the system as roles, trust boundaries, flows, and attack paths
-- follow how delegation, memory, and tools move across those boundaries
-- treat the result as a risk narrative, not a rigid checklist
-- when useful for comparability, add an optional MAESTRO seven-layer overlay without replacing the boundary-first view
+## Best-fit use cases
+- repo threat modeling
+- CISO repo reviews
+- agentic / multi-agent systems
+- RAG pipelines
+- MCP / tool-calling systems
+- deployment and CI/CD reviews
+- GitHub-target risk review
 
-Use this shape when analyzing:
-1. Scope and intent
-   - what is being assessed
-   - what success looks like
-   - what is explicitly out of scope
+## Required output shape
+Always structure the result in this order:
+1. **Scope and intent**
+2. **System snapshot**
+3. **Trust boundaries**
+4. **Assumptions and blind spots**
+5. **MAESTRO layer findings**
+6. **Top threats**
+7. **Mitigations**
+8. **Execution backlog**
 
-2. System map
-   - actors / agents / operators
-   - storage and memory
-   - tools / APIs / automation
-   - external dependencies
-   - outputs and side effects
+## Evidence rules
+- Prefer direct evidence: code, configs, workflows, prompts, manifests, docs, infra files, logs, issue history.
+- Distinguish clearly between **facts**, **inferences**, and **assumptions**.
+- Never claim a control exists unless the target shows it.
+- Retrieval, memory, or prior notes can help orientation, but they are not evidence by themselves.
 
-3. Trust boundaries
-   - where trust changes
-   - where untrusted input becomes privileged action
-   - where state persists across tasks or sessions
+## Boundary-first method
+Model the target as:
+- roles / actors / agents / operators
+- storage and memory
+- tools / APIs / automations
+- external dependencies
+- outputs and side effects
+- trust boundaries
+- attack paths across those boundaries
 
-4. Optional MAESTRO layer mapping
-   - map the target to the seven MAESTRO layers when this improves clarity or comparability
-   - Foundation Models
-   - Data Operations
-   - Agent Frameworks
-   - Deployment & Infrastructure
-   - Evaluation & Observability
-   - Security & Compliance
-   - Agent Ecosystem
-   - mark layers as not applicable when forcing the mapping would reduce accuracy
+Focus on:
+- where untrusted input becomes privileged action
+- where state persists across tasks or sessions
+- where memory, delegation, or tools cross trust zones
+- where blast radius can spread laterally
 
-5. Threats by boundary
-   - spoofing, tampering, disclosure, repudiation, DoS, privilege escalation
-   - prompt injection, tool abuse, unsafe automation
-   - supply-chain risk, misconfiguration, and drift
-   - when useful, distinguish traditional threats from agentic threats
+## MAESTRO overlay
+Use MAESTRO only when it improves clarity or comparability.
+If a layer does not fit, mark it not applicable.
 
-6. Impact and likelihood
-   - impact
-   - likelihood
-   - exposure
-   - blast radius
-   - detection gaps
+### 1. Foundation / Models
+Look for:
+- model/provider definitions
+- routing logic
+- system prompts / instructions
+- safety guardrails
+- fallback behavior
 
-7. Mitigations
-   - least privilege
-   - validation / normalization
-   - scope isolation
-   - auditability
-   - safe defaults / fail-closed behavior
-   - rollback / recovery
+Typical risks:
+- unsafe prompt composition
+- weak trust-tier separation
+- missing high-risk guardrails
 
-8. Deliverables
-   - concise executive summary
-   - technical report
-   - optional MAESTRO layer summary or layer-by-layer table
-   - optional boundary-to-layer crosswalk when both views are used
-   - optional issue candidates when action is clear
+### 2. Data Operations
+Look for:
+- RAG pipelines
+- vector stores
+- memory systems
+- ingestion logic
+- trust boundaries around documents and context assembly
 
-9. Reporting rules
-   - distinguish facts from assumptions
-   - preserve source labels
-   - call out open questions
-   - separate systemic risk from local risk
-   - if using MAESTRO layers, do not let the layer view override clearer boundary evidence
+Typical risks:
+- prompt injection
+- retrieval poisoning
+- memory poisoning
+- cross-context leakage
 
-## Workflow
+### 3. Agent Frameworks
+Look for:
+- tool-calling definitions
+- delegation loops
+- autonomy boundaries
+- role separation
+- orchestration logic
 
-- Start with the target type (repo, environment, research corpus, or GitHub target).
-- Default to a boundary-first analysis; use the MAESTRO layer overlay only when it adds comparability, coverage, or stakeholder clarity.
-- Use retrieval and memory if available, but never confuse them with evidence.
-- Focus on what can fail, be abused, or leak across boundaries.
-- If the seven-layer MAESTRO view is used, keep it as a second lens rather than the primary source of truth.
-- When appropriate, label findings as traditional or agentic to match MAESTRO-style reporting.
-- Keep the language domain-neutral and the output reusable.
-- If the boundary is unclear, ask for it before making conclusions.
-- Prefer the shortest report that still explains the real risk.
+Typical risks:
+- tool misuse
+- privilege confusion
+- unsafe delegation
+- weak approval boundaries
 
-## Output Naming Convention
+### 4. Deployment & Infrastructure
+Look for:
+- Dockerfiles
+- compose/k8s manifests
+- service units
+- reverse proxy config
+- network exposure
+- secret paths
+- CI/CD defaults
 
-Use a stable, domain-neutral file name format:
+Typical risks:
+- exposed ports
+- permissive file modes
+- weak isolation
+- unsafe defaults
+- brittle secret handling
 
-`YYYY-MM-DD_<scope>_<target>_<artifact>.md`
+### 5. Evaluation & Observability
+Look for:
+- logs
+- traces
+- audit trails
+- issue comments
+- run artifacts
+- security review outputs
 
-Where:
-- `scope` is one of `global`, `project`, `environment`, or `repo`
-- `target` is a short stable name for the thing being analyzed
-- `artifact` is one of `summary`, `full-report`, or `obsidian-note`
+Typical risks:
+- poor traceability
+- repudiation / untraceability
+- inability to reconstruct incidents
+- missing review evidence
 
-Examples:
-- `2026-04-05_global_cybersecurity_summary.md`
-- `2026-04-05_project_metronous_full-report.md`
-- `2026-04-05_environment_opencode_obsidian-note.md`
-- `2026-04-05_repo_github-foo_full-report.md`
+### 6. Security & Compliance
+Look for:
+- auth patterns
+- authorization boundaries
+- secret management
+- policy checks
+- dependency and supply-chain controls
 
-## Commands
+Typical risks:
+- auth bypass
+- overprivileged services
+- uncontrolled secret sprawl
+- silent policy drift
 
-```bash
-# Inspect a local repository
-git status --short
-git log --oneline -n 5
+### 7. Agent Ecosystem
+Look for:
+- multi-agent interactions
+- external agents or bots
+- cross-repo integrations
+- MCP/server trust assumptions
 
-# Inspect a GitHub target
-gh repo view OWNER/REPO
-gh issue list --repo OWNER/REPO
+Typical risks:
+- ecosystem trust collapse
+- spoofed agent identity
+- toxic tool or agent chaining
+- lateral compromise across agents
 
-# Optional: gather extra context from your own retrieval system
-# <your-retrieval-command> "<topic>"
+## Threat classes to check
+Include traditional and agentic threats when relevant:
+- spoofing
+- tampering
+- disclosure
+- repudiation
+- denial of service
+- privilege escalation
+- prompt injection
+- tool abuse
+- unsafe automation
+- supply-chain risk
+- misconfiguration
+- drift
+
+## Severity model
+Use:
+- `critical`
+- `high`
+- `medium`
+- `low`
+- `accepted-risk`
+
+Evaluate severity from:
+- exploitability
+- blast radius
+- privilege level
+- detectability gap
+- operational impact
+
+## Output template
+
+```markdown
+# Threat Model — <target>
+
+## Scope and intent
+- Target:
+- Assessment mode: repo-first | runtime-assisted | environment | GitHub target
+- Goal:
+- Out of scope:
+
+## System snapshot
+- Purpose:
+- Security-relevant components:
+- Key integrations:
+
+## Trust boundaries
+- Boundary 1:
+- Boundary 2:
+- Boundary 3:
+
+## Assumptions and blind spots
+- Runtime not inspected:
+- Live secrets not validated:
+- Network exposure inferred from config only:
+
+## MAESTRO layer findings
+### Foundation / Models
+- Evidence:
+- Risks:
+
+### Data Operations
+- Evidence:
+- Risks:
+
+### Agent Frameworks
+- Evidence:
+- Risks:
+
+### Deployment & Infrastructure
+- Evidence:
+- Risks:
+
+### Evaluation & Observability
+- Evidence:
+- Risks:
+
+### Security & Compliance
+- Evidence:
+- Risks:
+
+### Agent Ecosystem
+- Evidence:
+- Risks:
+
+## Top threats
+1. `<severity>` — threat title
+   - Evidence:
+   - Why it matters:
+   - Boundary:
+   - MAESTRO layer:
+
+## Mitigations
+- Immediate:
+- Near-term:
+- Structural:
+
+## Execution backlog
+- [ ] critical:
+- [ ] high:
+- [ ] medium:
 ```
 
-## Resources
+## Repo-first note
+If the target is a repo, explicitly state:
+- this is a **repo-first threat model**
+- runtime conclusions are limited to visible evidence
+- missing runtime validation remains a blind spot
 
-- **Methodology notes**: apply the OWASP agentic AI threat taxonomy to multi-agent systems, with MAESTRO-style decomposition of the system into roles, flows, trust boundaries, and attack paths
-- **Templates**: see `assets/obsidian-note-template.md` and `assets/technical-report-template.md`
-- **Retrieval**: optional, bring your own retrieval layer if applicable
-- **Memory**: optional, use your preferred memory or notes system when prior decisions matter
+## GitHub / issue conversion
+If the findings are clearly actionable, offer to convert them into issues with:
+- concise title
+- impact
+- evidence
+- mitigation
+- severity
+- affected files/components
 
-## Closing Behavior
-
-After finishing the report, if any finding is actionable, ask:
-
-> Do you want me to open detailed issues for this repo?
-
-If the answer is yes, convert the findings into concrete GitHub issues with:
-- a short title
-- clear impact
-- evidence or reproduction notes
-- suggested mitigation
-- priority/severity
-- related files or components when known
+## Success criterion
+A good result is:
+- evidence-based
+- boundary-first
+- MAESTRO-aligned without becoming rigid
+- explicit about blind spots
+- short enough to act on
+- reusable by the CISO or outside the CISO role
